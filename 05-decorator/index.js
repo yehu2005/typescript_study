@@ -62,7 +62,7 @@ function Introduce(n) {
     return function (target) {
         target.prototype.introduce = function () {
             for (let i = 0; i < n; i++) {
-                console.log(`我叫${this.name}, 我的年龄${this.age}`);
+                console.log(`我叫${this.name}, 我的年龄是${this.age}`);
             }
         };
     };
@@ -118,3 +118,30 @@ let c1 = new Compose('yahoo', 23);
 console.log(c1.toString());
 console.log(c1.getCreatedTime());
 console.log(c1.introduce());
+// 04-属性装饰器:监视age值改动，打印出新的age值
+function Log(target, propertyKey) {
+    // 用缓存key，来存储原始值，避免直接操作属性值
+    let key = `__${propertyKey}`;
+    Object.defineProperty(target, propertyKey, {
+        get: function () {
+            return this[key];
+        },
+        set: function (newValue) {
+            console.log(`我将要设置${propertyKey}为${newValue}`);
+            this[key] = newValue;
+        }
+    });
+}
+class LogTest {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+__decorate([
+    Log
+], LogTest.prototype, "age", void 0);
+let log1 = new LogTest('jerry', 20);
+let log2 = new LogTest('tom', 25);
+log1.age = 21;
+log2.age = 26;
