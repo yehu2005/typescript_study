@@ -53,7 +53,7 @@ const count: CountInterface = (x, y) => {
 let result = count(5, 6)
 console.log(result)
 
-// 04-接口可以继续
+// 04-接口可以继承
 interface PersonInterface {
     name: string
     age: number
@@ -75,3 +75,41 @@ const s2: StudentInterface = {
     color: 'white',
     grade: '初中'
 }
+
+
+// 06-interface 与 type 区别
+// 相同点：都可以定义对象结构
+// 不同点：
+// interface更专注于对象和类的结构，支持继承、合并；
+// type 可以定义类型别名、联合类型和交叉类型，不支持继承和自动合并
+
+type shuzi = number
+let a1: shuzi = 666
+type result = string | number
+let r1: result = 'ok'
+r1 = 1000
+
+// 交叉类型示例
+type User = {
+    id: number,
+    name: string
+}
+
+type Timestamp = {
+    createTime: number,
+    updateTime: number
+}
+
+type UserVo = User & Timestamp
+
+let user1: UserVo = {
+    id: 1,
+    name: 'tom',
+    createTime: 111,
+    updateTime: 222
+}
+
+// 07-interface 与 抽象类的区别
+// 相同点：都可以来约束类（应该遵循的契约 类的格式）
+// 不同点：
+// 接口：只能定义，不能实现，并且一个类可以实现多个接口；抽象类：可以定义，也可以实现，但是一个类只能继承一个抽象类；
